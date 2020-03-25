@@ -1,0 +1,56 @@
+<!--***********************************************************************
+ * $Date: 2018-06-20$
+ * $Author: Su Su Sandi $
+ * $Rev:  $
+ * 2018 AEON Microfinance (Myanmar) Company	Limited. All Rights Reserved.
+ ***********************************************************************-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:rich="http://richfaces.org/rich"
+	xmlns:pt="http://presto.dat.com/tag" template="/layout/template.xhtml">
+	<ui:define name="title">
+		<title><h:outputText value="#{displayItemBean.getDisplayItemName('scheduleInfo')}" /></title>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="scheduleRegisterform">
+			<p:focus context="scheduleRegisterform" />
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12" style="color: #302873; font-size: 10pt; text-align: center;">
+						<H1>
+							<p:outputLabel value="#{displayItemBean.getDisplayItemName('scheduleInfo')}" />
+						</H1>
+					</div>
+				</div>
+				<div class="ui-g">
+					<div class="ui-g-12" style="padding-left: 30%;">
+						<span class="message-style">
+							<pt:messages />
+						</span>
+						<p:panelGrid styleClass="status-panel-grid" style="margin-top: 0%;">
+							<p:row>
+								<p:column styleClass="status-panel-grid-column tblSingleLabel" style="width:250px;">
+									<h:outputText value="#{displayItemBean.getDisplayItemName('durationHour')}" />
+									<h:outputText styleClass="star" value=" *" />
+								</p:column>
+								<p:column styleClass="status-panel-grid-column" style="width:400px;">
+									<p:focus>
+										<p:inputNumber id="durationHour" autocomplete="off" style="width:100%;" value="#{scheduleManagementFormBean.registerHeaderBean.durationHour}"
+											placeholder="#{displayItemBean.getDisplayItemName('durationHour')}" />
+									</p:focus>
+								</p:column>
+							</p:row>
+							<p:row style="border: none;">
+								<p:column style="border: none;background:#f4f7fc;" colspan="2">
+									<p:commandButton value="#{displayItemBean.getDisplayItemName('update')}" action="#{scheduleManagementFormBean.update()}" id="actionButton"
+										style="margin-top: 2%;margin-left: -10px;" ajax="false" styleClass="button" />
+									<p:commandButton id="clearButton" styleClass="button" value="#{displayItemBean.getDisplayItemName('reset')}" style="margin-top: 2%;" ajax="false"
+										action="#{scheduleManagementFormBean.reset()}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

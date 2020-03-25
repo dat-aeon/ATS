@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MessagingHistory">
+
+	<select id="count"
+		parameterType="mm.aeon.com.ats.base.dto.messagingHistoryCount.MessagingHistoryCountReqDto"
+		resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			AT_CHAT_MESSAGE CM
+		LEFT JOIN
+			CUSTOMER_INFO C
+		ON
+			CM.CUSTOMER_ID = C.CUSTOMER_ID
+		LEFT JOIN
+			at_agent_level AAL
+		ON
+			CM.AGENT_LEVEL_ID = AAL.AGENT_LEVEL_ID
+		<where>
+			<if test="customerName != null and customerName != ''">
+				AND LOWER(C.NAME) LIKE '%' ||
+				LOWER(#{customerName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="agentName != null and agentName != ''">
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="loginName != null and loginName != ''">
+				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
+				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="fromDate != null">
+				AND TO_CHAR(CM.SEND_TIME::TIMESTAMP,'YYYYMMDDHH24MISS') <![CDATA[ >= ]]>
+				TO_CHAR(#{fromDate,jdbcType=TIMESTAMP}::TIMESTAMP,'YYYYMMDDHH24MISS')
+			</if>
+			<if test="toDate != null">
+				AND TO_CHAR(CM.SEND_TIME::TIMESTAMP,'YYYYMMDDHH24MISS') <![CDATA[ <= ]]>
+				TO_CHAR(#{toDate,jdbcType=TIMESTAMP}::TIMESTAMP,'YYYYMMDDHH24MISS')
+			</if>
+			<if test="categoryId != null">
+				AND CM.DA_PRODUCT_TYPE_ID = #{categoryId}
+			</if>
+			<if test="brandId != null">
+				AND CM.BRAND_ID = #{brandId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.messagingHistorySearch.MessagingHistorySearchReqDto"
+		resultMap="messagingHistorySearchResDto">
+		SELECT
+			CM.CHAT_MESSAGE_ID,
+			CM.DA_PRODUCT_TYPE_ID,
+			CM.BRAND_ID,
+			CM.CUSTOMER_LOCATION,
+			CM.MESSAGE_CONTENT,
+			CM.PRICE,
+			CM.PHONE_NO,
+			CM.URL_LINK,
+			CM.SEND_TIME,
+			CM.OP_SEND_FLAG,
+			C.NAME,
+			CM.AGENT_NAME AS LOGIN_NAME,
+			AAL.AGENT_LEVEL_NAME
+		FROM
+			at_chat_message CM
+		LEFT JOIN
+			customer_info C
+		ON
+			CM.CUSTOMER_ID = C.CUSTOMER_ID
+		LEFT JOIN
+			at_agent_level AAL
+		ON
+			CM.AGENT_LEVEL_ID = AAL.AGENT_LEVEL_ID
+		<where>
+			<if test="customerName != null and customerName != ''">
+				AND LOWER(C.NAME) LIKE '%' ||
+				LOWER(#{customerName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="agentName != null and agentName != ''">
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="loginName != null and loginName != ''">
+				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
+				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
+			</if>
+			<if test="fromDate != null">
+				AND TO_CHAR(CM.SEND_TIME::TIMESTAMP,'YYYYMMDDHH24MISS') <![CDATA[ >= ]]>
+				TO_CHAR(#{fromDate,jdbcType=TIMESTAMP}::TIMESTAMP,'YYYYMMDDHH24MISS')
+			</if>
+			<if test="toDate != null">
+				AND TO_CHAR(CM.SEND_TIME::TIMESTAMP,'YYYYMMDDHH24MISS') <![CDATA[ <= ]]>
+				TO_CHAR(#{toDate,jdbcType=TIMESTAMP}::TIMESTAMP,'YYYYMMDDHH24MISS')
+			</if>
+		</where>
+		GROUP BY
+		CM.SEND_TIME,CM.CHAT_MESSAGE_ID,C.NAME,AAL.AGENT_LEVEL_NAME,CM.AGENT_NAME
+		<if test="sortField != null and sortField != '' and sortField == 'customerName' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY C.NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY C.NAME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'agentName' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY AAL.AGENT_LEVEL_NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY AAL.AGENT_LEVEL_NAME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'loginName' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY CM.AGENT_NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY CM.AGENT_NAME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'sendTime' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY CM.SEND_TIME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY CM.SEND_TIME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'price' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY CM.PRICE ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY CM.PRICE DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'phoneNo' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY CM.PHONE_NO ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY CM.PHONE_NO DESC
+			</if>
+		</if>
+		<if test="sortField == null or sortField == ''">
+			ORDER BY CM.SEND_TIME DESC
+		</if>
+		<if test="offset != null and limit != null">
+			OFFSET #{offset} LIMIT #{limit}
+		</if>
+	</select>
+
+	<resultMap id="messagingHistorySearchResDto"
+		type="mm.aeon.com.ats.base.dto.messagingHistorySearch.MessagingHistorySearchResDto">
+		<id column="CHAT_MESSAGE_ID" jdbcType="INTEGER" property="chatMessageId" />
+		<result column="DA_PRODUCT_TYPE_ID" jdbcType="VARCHAR"
+			property="productTypeId" />
+		<result column="BRAND_ID" jdbcType="VARCHAR" property="brandId" />
+		<result column="CUSTOMER_LOCATION" jdbcType="VARCHAR" property="customerLocation" />
+		<result column="MESSAGE_CONTENT" jdbcType="VARCHAR" property="messageContent" />
+		<result column="PRICE" jdbcType="VARCHAR" property="price" />
+		<result column="PHONE_NO" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="URL_LINK" jdbcType="VARCHAR" property="urlLink" />
+		<result column="SEND_TIME" jdbcType="VARCHAR" property="sendTime" />
+		<result column="OP_SEND_FLAG" jdbcType="VARCHAR" property="opSendFlag" />
+		<result column="NAME" jdbcType="VARCHAR" property="customerName" />
+		<result column="AGENT_LEVEL_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+	</resultMap>
+
+</mapper>    
+    

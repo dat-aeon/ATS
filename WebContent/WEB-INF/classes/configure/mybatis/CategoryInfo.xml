@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="CategoryInfo">
+
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.categoryInfoSelectList.CategoryInfoSelectListReqDto"
+		resultMap="CategoryInfoSelectListResDto">
+		SELECT 
+			DA_PRODUCT_TYPE_ID,
+			NAME,
+			CREATED_TIME,
+			CREATED_BY,
+			UPDATED_TIME,
+			UPDATED_BY,
+			DEL_FLAG
+		FROM DA_PRODUCT_TYPE
+		<where>
+				DEL_FLAG = false
+			<if test="categoryId != null">
+				AND DA_PRODUCT_TYPE_ID = #{categoryId}
+			</if>
+			<if test="name != null and name != ''">
+				AND LOWER(NAME) LIKE '%' || #{name} || '%'
+			</if>
+			
+		</where>
+		ORDER BY DA_PRODUCT_TYPE_ID DESC
+	</select>
+
+	<resultMap id="CategoryInfoSelectListResDto"
+		type="mm.aeon.com.ats.base.dto.categoryInfoSelectList.CategoryInfoSelectListResDto">
+		<result column="DA_PRODUCT_TYPE_ID" property="categoryId"  />
+		<result column="NAME" property="name"  />
+		<result column="CREATED_TIME" property="createdTime"  />
+		<result column="CREATED_BY" property="createdBy"  />
+		<result column="UPDATED_TIME" property="updatedTime"  />
+		<result column="UPDATED_BY" property="updatedBy"  />
+		<result column="DEL_FLAG" property="delFlag"/>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyColumn="da_product_type_id"
+		keyProperty="categoryId"
+		parameterType="mm.aeon.com.ats.base.dto.categoryInfoRegister.CategoryInfoRegisterReqDto">
+		INSERT INTO da_product_type
+		<trim prefix="(" suffixOverrides="," suffix=")">		
+			<if test="name != null and name != ''">
+				NAME,
+			</if>
+			<if test="delFlag != null">
+				DEL_FLAG,
+			</if>
+			<if test="createdBy != null and createdBy != ''">
+				CREATED_BY,
+			</if>
+			<if test="createdTime != null">
+				CREATED_TIME,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="name != null and name != ''">
+				#{name},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+			<if test="createdBy != null and createdBy != ''">
+				#{createdBy},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectForUpdate"
+		parameterType="mm.aeon.com.ats.base.dto.categoryInfoSelectForUpdate.CategoryInfoSelectForUpdateReqDto"
+		resultMap="CategoryInfoSelectForUpdateResDto">
+		SELECT DA_PRODUCT_TYPE_ID, UPDATED_TIME
+		FROM da_product_type
+		<where>
+			DEL_FLAG = false
+			<if test="categoryId != null">
+				AND DA_PRODUCT_TYPE_ID = #{categoryId}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="CategoryInfoSelectForUpdateResDto"
+		type="mm.aeon.com.ats.base.dto.categoryInfoSelectForUpdate.CategoryInfoSelectForUpdateResDto">
+		<result property="categoryId" column="DA_PRODUCT_TYPE_ID" />
+		<result property="updatedTime" column="UPDATED_TIME" />
+	</resultMap>
+
+	<update id="update"
+		parameterType="mm.aeon.com.ats.base.dto.categoryInfoUpdate.CategoryInfoUpdateReqDto">
+		UPDATE da_product_type
+		<set>
+			<if test="name != null and name !=''">
+				NAME = #{name},
+			</if>
+			
+			<if test="updatedBy != null and updatedBy !=''">
+				UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="updatedTime != null">
+				UPDATED_TIME = #{updatedTime},
+			</if>
+			<if test="delFlag != null">
+				DEL_FLAG = #{delFlag},
+			</if>
+		</set>
+		<where>
+			DA_PRODUCT_TYPE_ID = #{categoryId}
+		</where>
+	</update>
+	
+	<select id="refer"
+		parameterType="mm.aeon.com.ats.base.dto.categoryInfoRefer.CategoryInfoReferReqDto"
+		resultMap="categoryInfoReferResDto">
+		SELECT NAME FROM da_product_type
+		<where>
+			<if test="categoryId != null">
+				AND DA_PRODUCT_TYPE_ID = #{categoryId}
+			</if>
+		</where>
+		
+	</select>
+    
+    <resultMap id="categoryInfoReferResDto"
+		type="mm.aeon.com.ats.base.dto.categoryInfoRefer.CategoryInfoReferResDto">
+		<result property="name" column="NAME" />
+	</resultMap>
+
+</mapper>

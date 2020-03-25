@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<!-- ************************************************************************************** 
+		************************ Configuration of Service Classes. *************************** 
+		************************************************************************************** -->
+
+	<bean name="PasswordInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.passwordInfoUpdateService.PasswordInfoUpdateService" />
+		
+	<bean name="UserInfoRegisterService"
+		class="mm.aeon.com.ats.base.service.userInfoRegisterService.UserInfoRegisterService" />
+
+	<bean name="UserInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.userInfoUpdateService.UserInfoUpdateService" />
+
+	<bean name="AgentInfoRegisterService"
+		class="mm.aeon.com.ats.base.service.agentInfoRegisterService.AgentInfoRegisterService" />
+		
+	<bean name="AgentLevelInfoRegisterService"
+		class="mm.aeon.com.ats.base.service.agentLevelInfoRegisterService.AgentLevelInfoRegisterService" />
+
+	<bean name="AgentInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.agentInfoUpdateService.AgentInfoUpdateService" />
+		
+	<bean name="AgentLevelInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.agentLevelInfoUpdateService.AgentLevelInfoUpdateService" />
+	
+	<bean name="ScheduleInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.scheduleUpdateService.ScheduleUpdateService" />
+		
+	<bean name="CategoryInfoRegisterService"
+		class="mm.aeon.com.ats.base.service.categoryInfoRegisterService.CategoryInfoRegisterService" />
+
+	<bean name="CategoryInfoUpdateService"
+		class="mm.aeon.com.ats.base.service.categoryInfoUpdateService.CategoryInfoUpdateService" />
+	
+			<bean name="BrandRegisterService"
+		class="mm.aeon.com.ats.base.service.brandRegisterService.BrandRegisterService" />
+		
+		<bean name="BrandUpdateService"
+		class="mm.aeon.com.ats.base.service.brandUpdateService.BrandUpdateService" />
+	
+	<bean name="requestServiceInfoRepository"
+		class="mm.com.dat.presto.main.core.base.controller.RequestServiceInfoRepository">
+
+		<property name="serviceInfoRepository">
+			<map>
+				<!-- *************************************************************************** 
+					********************Configuration Service id and Service Bean************** 
+					*************************************************************************** -->
+
+				<entry key="PASSWORDCHANGE">
+					<ref bean="PasswordInfoUpdateService" />
+				</entry>
+				
+				<entry key="USERINFOSI">
+					<ref bean="UserInfoRegisterService" />
+				</entry>
+				
+				<entry key="BRANDI">
+					<ref bean="BrandRegisterService" />
+				</entry>
+				<entry key="BRANDU">
+					<ref bean="BrandUpdateService" />
+				</entry>
+
+				<entry key="USERINFOSU">
+					<ref bean="UserInfoUpdateService" />
+				</entry>
+				
+				<entry key="AGENTINFOSI">
+					<ref bean="AgentInfoRegisterService" />
+				</entry>
+				
+				<entry key="AGENTLEVELINFOSI">
+					<ref bean="AgentLevelInfoRegisterService" />
+				</entry>
+
+				<entry key="AGENTINFOSU">
+					<ref bean="AgentInfoUpdateService" />
+				</entry>
+				
+				<entry key="AGENTLEVELINFOSU">
+					<ref bean="AgentLevelInfoUpdateService" />
+				</entry>
+				
+				<entry key="SCHEDULESU">
+					<ref bean="ScheduleInfoUpdateService" />
+				</entry>
+				
+				<entry key="CATEGORYINFOSU">
+					<ref bean="CategoryInfoUpdateService" />
+				</entry>
+				
+				<entry key="CATEGORYINFOSI">
+					<ref bean="CategoryInfoRegisterService" />
+				</entry>
+				
+			</map>
+		</property>
+	</bean>
+
+	<bean name="serviceInvoker"
+		class="mm.com.dat.presto.main.core.base.controller.ServiceInvoker"
+		scope="prototype">
+		<property name="requestServiceInfoRepository">
+			<ref bean="requestServiceInfoRepository" />
+		</property>
+	</bean>
+
+</beans>

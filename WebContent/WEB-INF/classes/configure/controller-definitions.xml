@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.1.xsd ">
+
+	<!-- ************************************************************************************** 
+		************************ Configuration of Flow Classes. ******************************* 
+		*************************************************************************************** -->
+
+	<bean name="loginController" class="mm.aeon.com.ats.front.login.LoginController"
+		scope="prototype" />
+
+	<bean name="passwordChangeController"
+		class="mm.aeon.com.ats.front.passwordChange.PasswordChangeController"
+		scope="prototype" />
+
+	<bean name="firstTimePasswordChangeController"
+		class="mm.aeon.com.ats.front.passwordChange.FirstTimePasswordChangeController"
+		scope="prototype" />
+
+	<bean name="adminSearchController"
+		class="mm.aeon.com.ats.front.adminList.AdminListSearchController"
+		scope="prototype" />
+
+	<bean name="adminRegisterController"
+		class="mm.aeon.com.ats.front.adminManagement.AdminManagementController"
+		scope="prototype" />
+
+	<bean name="adminDeleteController"
+		class="mm.aeon.com.ats.front.adminList.AdminDeleteController"
+		scope="prototype" />
+		
+	<bean name="agentListInitController"
+		class="mm.aeon.com.ats.front.agentList.AgentListInitController"
+		scope="prototype" />
+
+	<bean name="agentRegisterController"
+		class="mm.aeon.com.ats.front.agentManagement.AgentManagementController"
+		scope="prototype" />
+		
+	<bean name="agentLevelRegisterController"
+		class="mm.aeon.com.ats.front.agentLevelManagement.AgentLevelManagementController"
+		scope="prototype" />
+
+	<bean name="agentSearchController"
+		class="mm.aeon.com.ats.front.agentList.AgentListSearchController"
+		scope="prototype" />
+		
+	<bean name="agentLevelSearchController"
+		class="mm.aeon.com.ats.front.agentLevelList.AgentLevelListSearchController"
+		scope="prototype" />
+		
+	<bean name="agentDeleteController" 
+		class="mm.aeon.com.ats.front.agentList.AgentDeleteController"
+		scope="prototype" />
+		
+	<bean name="agentLevelDeleteController" 
+		class="mm.aeon.com.ats.front.agentLevelList.AgentLevelDeleteController"
+		scope="prototype" />
+
+	<bean name="operatorSearchController"
+		class="mm.aeon.com.ats.front.operatorList.OperatorListController"
+		scope="prototype" />
+
+	<bean name="operatorManagementController"
+		class="mm.aeon.com.ats.front.operatorManagement.OperatorManagementController"
+		scope="prototype" />
+
+	<bean name="operatorDeleteController"
+		class="mm.aeon.com.ats.front.operatorList.OperatorDeleteController"
+		scope="prototype" />
+
+	<bean name="scheduleSearchController"
+		class="mm.aeon.com.ats.front.scheduleManagement.ScheduleSearchController"
+		scope="prototype" />
+
+	<bean name="messagingHistoryListSearchController"
+		class="mm.aeon.com.ats.front.messagingHistory.MessagingHistoryListSearchController"
+		scope="prototype" />
+
+	<bean name="messagingHistoryListInitController"
+		class="mm.aeon.com.ats.front.messagingHistory.MessagingHistoryListInitController"
+		scope="prototype" />
+
+	<bean name="agentCallHistoryListSearchController"
+		class="mm.aeon.com.ats.front.messagingHistory.AgentCallHistoryListSearchController"
+		scope="prototype" />
+
+	<bean name="scheduleUpdateController"
+		class="mm.aeon.com.ats.front.scheduleManagement.ScheduleManagementController"
+		scope="prototype" />
+		
+	<bean name="categorySearchController"
+		class="mm.aeon.com.ats.front.categoryList.CategoryListSearchController"
+		scope="prototype" />
+
+	<bean name="categoryRegisterController"
+		class="mm.aeon.com.ats.front.categoryManagement.CategoryManagementController"
+		scope="prototype" />
+
+	<bean name="categoryDeleteController" 
+		class="mm.aeon.com.ats.front.categoryList.CategoryDeleteController"
+		scope="prototype" />
+		
+	<bean name="brandController" 
+		class="mm.aeon.com.ats.front.brand.BrandController"
+		scope="prototype" />
+		
+	<bean name="brandDeleteController" 
+		class="mm.aeon.com.ats.front.brand.BrandDeleteController"
+		scope="prototype" />
+		
+	<bean name="brandManagementController"
+		class="mm.aeon.com.ats.front.brandManagement.BrandManagementController"
+		scope="prototype" />
+
+
+	<bean name="flowProcessInvokerInfoRepository"
+		class="mm.com.dat.presto.main.core.front.controller.FlowProcessInvokerInfoRepository">
+		<property name="flowProcessAccessor">
+			<map>
+				<!-- *************************************************************************** 
+					*****************Configuration Controller and Controller Bean************** 
+					*************************************************************************** -->
+				<entry key="mm.aeon.com.ats.front.login.LoginFormBean#login">
+					<ref bean="loginController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.passwordChange.PasswordChangeFormBean#change">
+					<ref bean="passwordChangeController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.passwordChange.FirstTimePasswordChangeFormBean#change">
+					<ref bean="firstTimePasswordChangeController" />
+				</entry>
+
+				<entry key="mm.aeon.com.ats.front.adminList.AdminListFormBean#search">
+					<ref bean="adminSearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.adminManagement.AdminManagementFormBean#register">
+					<ref bean="adminRegisterController" />
+				</entry>
+
+				<entry key="mm.aeon.com.ats.front.adminList.AdminListFormBean#delete">
+					<ref bean="adminDeleteController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.agentManagement.AgentManagementFormBean#register">
+					<ref bean="agentRegisterController" />
+				</entry>
+				
+				<entry
+					key="mm.aeon.com.ats.front.agentLevelManagement.AgentLevelManagementFormBean#register">
+					<ref bean="agentLevelRegisterController" />
+				</entry>
+
+				<entry key="mm.aeon.com.ats.front.agentList.AgentListFormBean#delete">
+					<ref bean="agentDeleteController" />
+				</entry>
+				
+				<entry key="mm.aeon.com.ats.front.agentLevelList.AgentLevelListFormBean#delete">
+					<ref bean="agentLevelDeleteController" />
+				</entry>
+				
+				<entry
+					key="mm.aeon.com.ats.front.agentList.AgentListFormBean#init">
+					<ref bean="agentListInitController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.operatorList.OperatorListFormBean#search">
+					<ref bean="operatorSearchController" />
+				</entry>
+
+				<entry key="mm.aeon.com.ats.front.agentList.AgentListFormBean#search">
+					<ref bean="agentSearchController" />
+				</entry>
+				
+				<entry key="mm.aeon.com.ats.front.agentLevelList.AgentLevelListFormBean#search">
+					<ref bean="agentLevelSearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.operatorManagement.OperatorManagementFormBean#register">
+					<ref bean="operatorManagementController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.operatorManagement.OperatorManagementFormBean#update">
+					<ref bean="operatorManagementController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.operatorList.OperatorListFormBean#delete">
+					<ref bean="operatorDeleteController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.messagingHistory.MessagingHistoryListFormBean#search">
+					<ref bean="messagingHistoryListSearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.messagingHistory.MessagingHistoryListFormBean#init">
+					<ref bean="messagingHistoryListInitController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.messagingHistory.AgentCallHistoryListFormBean#search">
+					<ref bean="agentCallHistoryListSearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.scheduleManagement.ScheduleManagementFormBean#init">
+					<ref bean="scheduleSearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.scheduleManagement.ScheduleManagementFormBean#update">
+					<ref bean="scheduleUpdateController" />
+				</entry>
+				
+				<entry key="mm.aeon.com.ats.front.categoryList.CategoryListFormBean#search">
+					<ref bean="categorySearchController" />
+				</entry>
+
+				<entry
+					key="mm.aeon.com.ats.front.categoryManagement.CategoryManagementFormBean#register">
+					<ref bean="categoryRegisterController" />
+				</entry>
+
+				<entry key="mm.aeon.com.ats.front.categoryList.CategoryListFormBean#delete">
+					<ref bean="categoryDeleteController" />
+				</entry>
+				
+				<entry key="mm.aeon.com.ats.front.brand.BrandFormBean#search">
+					<ref bean="brandController" />
+				</entry>
+				<entry key="mm.aeon.com.ats.front.brand.BrandFormBean#delete">
+					<ref bean="brandDeleteController" />
+				</entry>
+				<entry
+					key="mm.aeon.com.ats.front.brandManagement.BrandManagementFormBean#register">
+					<ref bean="brandManagementController" />
+				</entry>
+			</map>
+		</property>
+
+	</bean>
+
+	<bean name="controllerAccessor"
+		class="mm.com.dat.presto.main.core.front.controller.ControllerAccessor"
+		scope="prototype">
+		<property name="flowProcessInfoInvokerRepository" ref="flowProcessInvokerInfoRepository" />
+		<property name="serviceInvoker" ref="serviceInvoker" />
+		<property name="daoServiceInvoker" ref="daoServiceInvoker" />
+	</bean>
+</beans>

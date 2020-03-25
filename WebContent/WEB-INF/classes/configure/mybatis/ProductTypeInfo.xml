@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductTypeInfo">
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.productTypeList.ProductTypeSelectListReqDto"
+		resultMap="ProductTypeSelectListResDto">
+		SELECT DA_PRODUCT_TYPE_ID, NAME, DEL_FLAG
+		FROM DA_PRODUCT_TYPE
+		<where>
+			<if test="delFlag != null ">
+				DEL_FLAG = #{delFlag}
+			</if>
+		</where>
+		ORDER BY DA_PRODUCT_TYPE_ID
+	</select>
+
+	<resultMap id="ProductTypeSelectListResDto"
+		type="mm.aeon.com.ats.base.dto.productTypeList.ProductTypeSelectListResDto">
+		<result property="productTypeId" column="DA_PRODUCT_TYPE_ID" />
+		<result property="delFlag" column="DEL_FLAG" />
+		<result property="productName" column="NAME" />
+	</resultMap>
+	
+	<select id="selectForUpdate"
+		parameterType="mm.aeon.com.ats.base.dto.atAgentLevelSelectForDelete.AtAgentLevelSelectForDeleteReqDto"
+		resultMap="AgentLevelSelectForUpdateResDto">
+		SELECT at_agent_level_type_id, UPDATED_TIME
+		FROM at_agent_level
+		<where>
+			DEL_FLAG = 0
+			<if test="agentLevelTypeId != null ">
+				AND at_agent_level_type_id = #{agentLevelTypeId}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="AgentLevelSelectForUpdateResDto"
+		type="mm.aeon.com.ats.base.dto.atAgentLevelSelectForDelete.AtAgentLevelSelectForDeleteResDto">
+		<result column="at_agent_level_type_id" property="agentLevelTypeId" />
+		<result column="UPDATED_TIME" property="updatedTime" />
+	</resultMap>
+
+</mapper>

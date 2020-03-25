@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AtAgentLevelType">
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.atAgentLevelTypeList.AtAgentLevelTypeSelectListReqDto"
+		resultMap="atAgentLevelTypeSelectListResDto">
+		SELECT 
+			AT_AGENT_LEVEL_TYPE_ID, 
+			NAME,
+			TIME_MINUTE_INTERVAL,
+			DEL_FLAG,
+			UPDATED_TIME,
+			CREATED_TIME,
+			UPDATED_BY,
+			CREATED_BY
+		FROM 
+			AT_AGENT_LEVEL_TYPE
+		<where>
+			<if test="delFlag != null ">
+				DEL_FLAG = #{delFlag}
+			</if>
+		</where>
+		<if test="sortField != null and sortField != '' and sortField == 'name' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY NAME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'timeMinuteInterval' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY TIME_MINUTE_INTERVAL ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY TIME_MINUTE_INTERVAL DESC
+			</if>
+		</if>
+		<if test="sortField == null or sortField == ''">
+			ORDER BY AT_AGENT_LEVEL_TYPE_ID DESC
+		</if>
+		<if test="offset != null and limit != null">
+			OFFSET #{offset} LIMIT #{limit}
+		</if>
+	</select>
+
+	<resultMap id="atAgentLevelTypeSelectListResDto"
+		type="mm.aeon.com.ats.base.dto.atAgentLevelTypeList.AtAgentLevelTypeSelectListResDto">
+		<result property="atAgentLevelTypeId" jdbcType="INTEGER" column="AT_AGENT_LEVEL_TYPE_ID" />
+		<result property="name" jdbcType="VARCHAR" column="NAME" />
+		<result property="timeMinuteInterval" jdbcType="INTEGER" column="TIME_MINUTE_INTERVAL" />
+		<result property="delFlag" jdbcType="BOOLEAN" column="DEL_FLAG" />
+		<result property="updatedTime" column="UPDATED_TIME" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="updatedBy" column="UPDATED_BY" />
+		<result property="createdBy" column="CREATED_BY" />
+	</resultMap>
+	
+	<select id="count"
+		parameterType="mm.aeon.com.ats.base.dto.agentLevelInfoCount.AgentLevelInfoCountReqDto"
+		resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM 
+			AT_AGENT_LEVEL_TYPE AI
+		<where>
+			AI.DEL_FLAG = false
+		</where>
+	</select>
+	
+	<select id="selectForUpdate"
+		parameterType="mm.aeon.com.ats.base.dto.atAgentLevelSelectForUpdate.AtAgentLevelSelectForUpdateReqDto"
+		resultMap="AgentLevelSelectForUpdateResDto">
+		SELECT at_agent_level_type_id, UPDATED_TIME
+		FROM at_agent_level_type
+		<where>
+			DEL_FLAG = false
+			<if test="agentLevelTypeId != null ">
+				AND at_agent_level_type_id = #{agentLevelTypeId}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="AgentLevelSelectForUpdateResDto"
+		type="mm.aeon.com.ats.base.dto.atAgentLevelSelectForUpdate.AtAgentLevelSelectForUpdateResDto">
+		<result column="at_agent_level_type_id" property="agentLevelTypeId" />
+		<result column="UPDATED_TIME" property="updatedTime" />
+	</resultMap>
+	
+	<update id="update"
+		parameterType="mm.aeon.com.ats.base.dto.agentLevelInfoUpdate.AgentLevelInfoUpdateReqDto">
+		UPDATE at_agent_level_type
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="timeMinuteInterval != null">
+				time_minute_interval = #{timeMinuteInterval},
+			</if>
+			<if test="updatedBy != null and updatedBy !=''">
+				updated_by = #{updatedBy},
+			</if>
+			<if test="updatedTime != null">
+				updated_time = #{updatedTime},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</set>
+		<where>
+			at_agent_level_type_id = #{agentLevelTypeId}
+		</where>
+	</update>
+	
+	<insert id="insert" useGeneratedKeys="true" keyColumn="at_agent_level_type_id"
+		keyProperty="agentLevelTypeId"
+		parameterType="mm.aeon.com.ats.base.dto.agentLevelInfoRegister.AgentLevelInfoRegisterReqDto">
+		INSERT INTO at_agent_level_type
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="timeMinuteInterval != null">
+				time_minute_interval,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="createdBy != null and createdBy != ''">
+				created_by,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="name != null and name != ''">
+				#{name},
+			</if>
+			<if test="timeMinuteInterval != null">
+				#{timeMinuteInterval},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag},
+			</if>
+			<if test="createdBy != null and createdBy != ''">
+				#{createdBy},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

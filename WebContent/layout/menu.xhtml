@@ -1,0 +1,49 @@
+<!--***********************************************************************
+ * $Date: 2019-09-11$
+ * $Author: Thiha Htet Zaw$
+ * $Rev:  $
+ * 2019 AEON Microfinance (Myanmar) Company	Limited. All Rights Reserved.
+ ***********************************************************************-->
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j" xmlns:p="http://primefaces.org/ui" xmlns:s="http://jboss.com/products/seam/taglib" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	contentType="text/html">
+	<h:form>
+		<p:menubar>
+			<!-- For Administrator User -->
+			<c:if test="#{userInfo.userTypeName == 'ATS ADMIN'}">
+				<p:submenu label="#{displayItemBean.getDisplayItemName('userManagement')}" icon="ui-icon-gear" style="color: #302873;">
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('admin')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('AdminSearch')}" />
+					<p:separator />
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('operator')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('OperatorList')}" />
+				</p:submenu>
+			</c:if>
+			
+			<c:if test="#{userInfo.userTypeName == 'ATS ADMIN'}">
+				<p:submenu label="#{displayItemBean.getDisplayItemName('agentManagement')}" icon="ui-icon-gear" style="color: #302873;">
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('agent')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('AgentList')}" />	
+					<p:separator />
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('agentLevel')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('AgentLevelList')}" />										
+				</p:submenu>
+			</c:if>
+			
+			<p:submenu label="#{displayItemBean.getDisplayItemName('messageManagement')}" icon="ui-icon-gear">
+				<p:menuitem value="#{displayItemBean.getDisplayItemName('messagingHistory')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('MSG001')}" />
+				</p:submenu>
+			
+			<!-- For Profile Management -->
+			<p:submenu label="#{displayItemBean.getDisplayItemName('profile')}" icon="ui-icon-gear" style="color: #302873;">
+				<p:menuitem value="#{displayItemBean.getDisplayItemName('passwordChange')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('PasswordChange')}" />
+			</p:submenu>	
+			
+			<!-- For Application Setup Management -->
+			<p:submenu icon="ui-icon-gear" label="#{displayItemBean.getDisplayItemName('applicationSetupManagement')}">			
+				<p:menuitem value="#{displayItemBean.getDisplayItemName('scheduleInfoSetup')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('SCL001')}" />
+				<p:separator/>
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('category')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('CAT001')}" />
+					<p:separator/>	
+					<p:menuitem value="#{displayItemBean.getDisplayItemName('brand')}" icon="ui-icon-search" action="#{mnu001FormBean.propagate('BRN001')}" />	
+			</p:submenu>
+					
+		</p:menubar>
+	</h:form>
+</f:view>

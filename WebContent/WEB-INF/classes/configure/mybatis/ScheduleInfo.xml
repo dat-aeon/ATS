@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ScheduleInfo">
+
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.scheduleInfoSearch.ScheduleSearchReqDto"
+		resultMap="scheduleSearchResDtoResultMap">
+		SELECT 
+			AST.SCHEDULE_TIME_ID,
+			AST.DURATION_HOUR,
+			AST.DEL_FLAG,
+			AST.CREATED_BY,
+			AST.UPDATED_BY,
+			AST.UPDATED_TIME,
+			AST.CREATED_TIME
+		FROM 
+			at_schedule_time AST
+		ORDER BY 
+			AST.SCHEDULE_TIME_ID DESC
+	</select>
+
+	<resultMap id="scheduleSearchResDtoResultMap"
+		type="mm.aeon.com.ats.base.dto.scheduleInfoSearch.ScheduleSearchResDto">
+		<result column="SCHEDULE_TIME_ID" property="scheduleTimeId" />
+		<result column="DURATION_HOUR" property="durationHour" />
+		<result column="DEL_FLAG" property="delFlag" />
+		<result column="CREATED_BY" property="createdBy"  />
+		<result column="CREATED_TIME" property="createdTime"  />
+		<result column="UPDATED_BY" property="updatedBy"  />
+		<result column="UPDATED_TIME" property="updatedTime"  />
+	</resultMap>
+
+	<select id="selectForUpdate"
+		parameterType="mm.aeon.com.ats.base.dto.scheduleInfoSelectForUpdate.ScheduleSelectForUpdateReqDto"
+		resultMap="scheduleSelectForUpdateResDtoResultMap">
+		SELECT 
+			AST.SCHEDULE_TIME_ID, 
+			AST.UPDATED_TIME
+		FROM at_schedule_time AST
+		<where>
+			AST.SCHEDULE_TIME_ID = #{scheduleTimeId}
+		</where>
+	</select>
+
+	<resultMap id="scheduleSelectForUpdateResDtoResultMap"
+		type="mm.aeon.com.ats.base.dto.scheduleInfoSelectForUpdate.ScheduleSelectForUpdateResDto">
+		<result column="SCHEDULE_TIME_ID"  property="scheduleTimeId" />
+		<result column="UPDATED_TIME"  property="updatedTime" />
+	</resultMap>
+	
+	<select id="refer"
+		parameterType="mm.aeon.com.ats.base.dto.scheduleInfoRefer.ScheduleInfoReferReqDto"
+		resultMap="scheduleInfoReferResDto">
+		SELECT schedule_time_id, duration_hour
+		FROM at_schedule_time
+		<where>
+			<if test="delFlag != null ">
+				DEL_FLAG = #{delFlag}
+			</if>
+		</where>
+		ORDER BY schedule_time_id
+	</select>
+    
+    <resultMap id="scheduleInfoReferResDto"
+		type="mm.aeon.com.ats.base.dto.scheduleInfoRefer.ScheduleInfoReferResDto">
+		<result property="scheduleTimeId" column="schedule_time_id" />
+		<result property="durationHour" column="duration_hour" />
+	</resultMap>
+	
+	<update id="update"
+		parameterType="mm.aeon.com.ats.base.dto.scheduleUpdate.ScheduleUpdateReqDto">
+		UPDATE at_schedule_time
+		<set>
+			<if test="durationHour != null and durationHour != ''">
+				duration_hour = #{durationHour},
+			</if>
+			<if test="delFlag != null ">
+				DEL_FLAG = #{delFlag},
+			</if>
+			<if test="updatedBy != null and updatedBy !=''">
+				UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="updatedTime != null">
+				UPDATED_TIME = #{updatedTime},
+			</if>
+		</set>
+		<where>
+			<if test="scheduleTimeId != null and scheduleTimeId !=''">
+				schedule_time_id = #{scheduleTimeId}
+			</if>
+		</where>
+	</update>
+	 
+	<select id="count"
+		parameterType="mm.aeon.com.ats.base.dto.scheduleCount.ScheduleCountReqDto"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM at_schedule_time	
+		where del_flag=false		
+	</select>
+</mapper>

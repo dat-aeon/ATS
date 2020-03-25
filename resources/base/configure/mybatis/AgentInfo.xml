@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="AgentInfo">
+
+	<select id="selectList"
+		parameterType="mm.aeon.com.ats.base.dto.agentInfoSelectList.AgentInfoSelectListReqDto"
+		resultMap="AgentInfoSelectListResDto">
+		SELECT 
+			AI.AGENT_LEVEL_ID, 
+			AI.AGENT_LEVEL_NAME, 
+			AI.PASSWORD,
+			AI.AGENT_LEVEL_CODE,
+			AI.UPDATED_TIME,
+			AI.AT_AGENT_LEVEL_TYPE_ID
+		FROM at_agent_level AI
+		left join AT_AGENT_LEVEL_TYPE AT
+		On AI.AT_AGENT_LEVEL_TYPE_ID = AT.AT_AGENT_LEVEL_TYPE_ID
+		<where>
+			AI.DEL_FLAG = 0
+ 			<if test="agentLevelCode != null and agentLevelCode != ''">
+ 				AND LOWER(AI.AGENT_LEVEL_CODE) LIKE LOWER('%' || #{agentLevelCode} || '%')
+			</if>
+			<if test="agentLevelName != null and agentLevelName != ''">
+				AND LOWER(AI.AGENT_LEVEL_NAME) LIKE LOWER('%' || #{agentLevelName} || '%')
+			</if>	
+			<if test="atAgentLevelTypeId != null">
+				AND AI.AT_AGENT_LEVEL_TYPE_ID = #{atAgentLevelTypeId}
+			</if>		
+		</where>
+		<if test="sortField != null and sortField != '' and sortField == 'agentLevelCode' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY AI.AGENT_LEVEL_CODE ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY AI.AGENT_LEVEL_CODE DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'agentLevelName' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY AI.AGENT_LEVEL_NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY AI.AGENT_LEVEL_NAME DESC
+			</if>
+		</if>
+		<if test="sortField != null and sortField != '' and sortField == 'atAgentLevelTypeId' ">
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
+				ORDER BY AT.NAME ASC
+			</if>
+			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'DESCENDING' ">
+				ORDER BY AT.NAME DESC
+			</if>
+		</if>
+		<if test="sortField == null or sortField == ''">
+			ORDER BY AI.AGENT_LEVEL_ID DESC
+		</if>
+		<if test="offset != null and limit != null">
+			OFFSET #{offset} LIMIT #{limit}
+		</if>
+	</select>
+
+	<resultMap id="AgentInfoSelectListResDto"
+		type="mm.aeon.com.ats.base.dto.agentInfoSelectList.AgentInfoSelectListResDto">
+		<result column="AGENT_LEVEL_ID" property="agentLevelId"  />
+		<result column="AGENT_LEVEL_NAME" property="agentLevelName"  />
+		<result column="PASSWORD" property="password"  />
+		<result column="AGENT_LEVEL_CODE" property="agentLevelCode"  />
+		<result column="UPDATED_TIME" property="updatedTime"  />
+		<result column="AT_AGENT_LEVEL_TYPE_ID" property="atAgentLevelTypeId"  />
+	</resultMap>
+
+
+	<insert id="insert" useGeneratedKeys="true" keyColumn="agent_level_id"
+		keyProperty="agentLevelId"
+		parameterType="mm.aeon.com.ats.base.dto.agentInfoRegister.AgentInfoRegisterReqDto">
+		INSERT INTO at_agent_level
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="agentName != null and agentName != ''">
+				AGENT_LEVEL_NAME,
+			</if>
+			<if test="password != null and password != ''">
+				PASSWORD,
+			</if>
+			del_flag,
+			<if test="agentLevelCode != null and agentLevelCode != ''">
+				AGENT_LEVEL_CODE,
+			</if>
+				<if test="createdBy != null and createdBy != ''">
+				created_by,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="atAgentLevelTypeId != null">
+				at_agent_level_type_id,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			
+			<if test="agentName != null and agentName != ''">
+				#{agentName},
+			</if>
+			<if test="password != null and password != ''">
+				#{password},
+			</if>
+			0,
+			<if test="agentLevelCode != null and agentLevelCode != '' ">
+				#{agentLevelCode},
+			</if>
+					<if test="createdBy != null and createdBy != ''">
+				#{createdBy},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime},
+			</if>
+			<if test="atAgentLevelTypeId != null">
+				#{atAgentLevelTypeId},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectForUpdate"
+		parameterType="mm.aeon.com.ats.base.dto.agentLevelSelectForUpdate.AgentLevelSelectForUpdateReqDto"
+		resultMap="AgentLevelSelectForUpdateResDto">
+		SELECT agent_level_id, UPDATED_TIME
+		FROM at_agent_level
+		<where>
+			DEL_FLAG = 0
+			<if test="agentLevelId != null ">
+				AND agent_level_id = #{agentLevelId}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="AgentLevelSelectForUpdateResDto"
+		type="mm.aeon.com.ats.base.dto.agentLevelSelectForUpdate.AgentLevelSelectForUpdateResDto">
+		<result property="agentLevelId" column="agent_level_id" />
+		<result property="updatedTime" column="UPDATED_TIME" />
+	</resultMap>
+
+	<update id="update"
+		parameterType="mm.aeon.com.ats.base.dto.agentInfoUpdate.AgentInfoUpdateReqDto">
+		UPDATE at_agent_level
+		<set>
+			<if test="agentName != null and agentName !=''">
+				AGENT_LEVEL_NAME = #{agentName},
+			</if>
+			<if test="password != null and password !=''">
+				PASSWORD = #{password},
+			</if>
+			<if test="agentLevelCode != null and agentLevelCode !=''">
+				AGENT_LEVEL_CODE = #{agentLevelCode},
+			</if>
+			<if test="updatedBy != null and updatedBy !=''">
+				updated_by = #{updatedBy},
+			</if>
+			<if test="updatedTime != null">
+				updated_time = #{updatedTime},
+			</if>
+			<if test="delFlag != null and delFlag !=''">
+				del_flag = #{delFlag},
+			</if>
+			<if test="atAgentLevelTypeId != null ">
+				at_agent_level_type_id = #{atAgentLevelTypeId},
+			</if>
+		</set>
+		<where>
+			AGENT_LEVEL_ID = #{agentLevelId}
+		</where>
+	</update>
+	
+	<select id="count"
+		parameterType="mm.aeon.com.ats.base.dto.agentInfoCount.AgentInfoCountReqDto"
+		resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM at_agent_level AI
+		<where>
+			AI.DEL_FLAG = 0
+ 			<if test="agentLevelCode != null and agentLevelCode != ''">
+ 				AND LOWER(AI.AGENT_LEVEL_CODE) LIKE LOWER('%' || #{agentLevelCode} || '%')
+			</if>
+			<if test="agentLevelName != null and agentLevelName != ''">
+				AND LOWER(AI.AGENT_LEVEL_NAME) LIKE LOWER('%' || #{agentLevelName} || '%')
+			</if>	
+			<if test="atAgentLevelTypeId != null">
+				AND AI.AT_AGENT_LEVEL_TYPE_ID = #{atAgentLevelTypeId}
+			</if>		
+		</where>
+	</select>
+	
+	<!-- <select id="refer"
+		parameterType="mm.aeon.com.ats.base.dto.agentInfoRefer.AgentInfoReferReqDto"
+		resultMap="agentInfoReferResDto">
+		SELECT NAME FROM agent_info
+		
+		<where>
+			<if test="agent_id != null">
+				AND USER_ID = #{agent_id}
+			</if>
+			<if test="agent_type_id != null">
+				AND USER_TYPE_ID = #{agent_type_id}
+			</if>
+		</where>
+		
+	</select>
+    
+    <resultMap id="agentInfoReferResDto"
+		type="mm.aeon.com.ats.base.dto.agentInfoRefer.AgentInfoReferResDto">
+		<result property="agent_name" column="NAME" />
+	</resultMap>
+ -->
+</mapper>
