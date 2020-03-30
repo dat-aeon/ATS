@@ -20,30 +20,25 @@
 		}
 	</script>
 
-	<div class="ui-g-10">
+	<div class="ui-g-9" style="display: table; height: 100%; text-align: center; padding-left: 5%;">
 		<c:if test="#{identity.loggedIn}">
-			<div class="ui-g-9">
-				<div id="title_lable">
+				<div id="title_lable" style="display: table-cell; vertical-align: middle;">
 					<p:commandLink action="#{mnu001FormBean.propagate('Welcome')}">
 						<img src="../presto/images/AEON_Logo.png" style="float: left; width: 50px; height: 50px;" />
 					</p:commandLink>
-
-
 					<p class="main_title">Agent Telemarketing Application</p>
 				</div>
-				<!-- <div class="header-line"></div> -->
-
-			</div>
-			<div class="ui-g-3">
-				<div style="float: right; text-align: left; color: #fef1ec; margin-top: 12px;">
-					<p:outputLabel value="#{userInfo.userName}" style="display: block"/>
-				</div>
-			</div>
 		</c:if>
 	</div>
-	<div class="ui-g-2">
+	<div class="ui-g-3" style="display: table; height: 100%; text-align: center;">
 		<c:if test="#{identity.loggedIn}">
-			<p:commandButton value="Logout" action="#{loginFormBean.logout()}" styleClass="btn_logout" style="width:104px;" />
+			<div style="display: table-cell; vertical-align: middle;">
+			<h:form>
+			    <p:menuButton value="#{userInfo.userName}" iconPos="right" styleClass="signOutButton">
+			        <p:menuitem value="Logout" action="#{loginFormBean.logout()}" styleClass="signOutMenu" icon="fa fa-fw fa-sign-out"/>
+			    </p:menuButton>
+			</h:form>
+			</div>
 		</c:if>
 	</div>
 

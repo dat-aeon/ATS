@@ -26,11 +26,11 @@
 				LOWER(#{customerName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="agentName != null and agentName != ''">
-				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
 				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="loginName != null and loginName != ''">
-				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
 				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="fromDate != null">
@@ -65,8 +65,8 @@
 			CM.SEND_TIME,
 			CM.OP_SEND_FLAG,
 			C.NAME,
-			CM.AGENT_NAME AS LOGIN_NAME,
-			AAL.AGENT_LEVEL_NAME
+			CM.AGENT_NAME,
+			AAL.AGENT_LEVEL_NAME AS LOGIN_NAME
 		FROM
 			at_chat_message CM
 		LEFT JOIN
@@ -83,11 +83,11 @@
 				LOWER(#{customerName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="agentName != null and agentName != ''">
-				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
 				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="loginName != null and loginName != ''">
-				AND LOWER(CM.AGENT_NAME) LIKE '%' ||
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
 				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="fromDate != null">
@@ -109,7 +109,7 @@
 				ORDER BY C.NAME DESC
 			</if>
 		</if>
-		<if test="sortField != null and sortField != '' and sortField == 'agentName' ">
+		<if test="sortField != null and sortField != '' and sortField == 'loginName' ">
 			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
 				ORDER BY AAL.AGENT_LEVEL_NAME ASC
 			</if>
@@ -117,7 +117,7 @@
 				ORDER BY AAL.AGENT_LEVEL_NAME DESC
 			</if>
 		</if>
-		<if test="sortField != null and sortField != '' and sortField == 'loginName' ">
+		<if test="sortField != null and sortField != '' and sortField == 'agentName' ">
 			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
 				ORDER BY CM.AGENT_NAME ASC
 			</if>
@@ -171,7 +171,7 @@
 		<result column="SEND_TIME" jdbcType="VARCHAR" property="sendTime" />
 		<result column="OP_SEND_FLAG" jdbcType="VARCHAR" property="opSendFlag" />
 		<result column="NAME" jdbcType="VARCHAR" property="customerName" />
-		<result column="AGENT_LEVEL_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
 		<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
 	</resultMap>
 

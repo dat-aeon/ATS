@@ -116,6 +116,7 @@ public class AgentManagementFormBean extends AbstractFormBean implements IReques
         }
         doReload = new Boolean(true);
         registerHeaderBean = new AgentManagementHeaderBean();
+        this.registerHeaderBean.setAtAgentLevelTypeSelectItemList(backUpHeaderBean.getAtAgentLevelTypeSelectItemList());
         return LinkTarget.OK;
     }
 

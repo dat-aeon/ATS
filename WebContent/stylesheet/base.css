@@ -171,13 +171,21 @@
 }
 
 /* ----------------------Menu CSS--------------------------*/
-.ui-menu {
+.da-ui-menu-form .ui-menu {
 	background: none !important;
 	padding: 0px;
 	border-width: 0px !important;
+	width: 100%;
 }
 
-.ui-menuitem {
+.ui-menu {
+	background: #302873; !important;
+	padding: 0px;
+	border-width: 0px !important;
+	width: 12%;
+}
+
+.da-ui-menu-form .ui-menuitem {
 	height: 35px;
 }
 
@@ -843,4 +851,71 @@ tr.search td.col {
 .msgReportTable .ui-datatable th.ui-sortable-column, .ui-datatable {
 	width: 100%;
 	overflow: auto !important;
+}
+
+.signOutButton button {
+	box-shadow: none !important;
+	text-shadow: none !important;
+    background: #302873
+		-webkit-gradient(linear, left top, left bottom, from(rgb(48, 40, 115)),
+		to(rgba(255, 255, 255, 0)));
+    color: #ffffff;
+    margin-top: 18px;
+    width: auto;
+    padding: 5px;
+	border: none;
+}
+
+.signOutButton button span {
+	font-size: 15px;
+}
+
+.signOutButton button:hover  {
+	background: #f7ad59
+		-webkit-gradient(linear, left top, left bottom, from(rgb(247, 173, 89)),
+		to(rgb(247, 173, 89)));
+	color: #302873;
+	background-image: none !important;
+	border: 1px solid #302873;
+}
+
+.signOutButton button:focus  {
+	background: #f7ad59
+		-webkit-gradient(linear, left top, left bottom, from(rgb(247, 173, 89)),
+		to(rgb(247, 173, 89)));
+	color: #302873;
+	background-image: none !important;
+	border: 1px solid #302873;
+}
+
+.signOutMenu:hover{
+	background: #fff !important;
+	width: 95%;
+	margin: 0px;
+	border: 1px solid #302873;
+	height: 27px;
+	line-height: 27px;
+	border: 1px solid #302873 !important;
+}
+
+.fa {
+	color: #302873 !important;
+	margin-right: 5px;
+	margin-top: 6px;
+}
+
+.signOutMenu {
+	position: fixed; 
+	top: 9%; 
+	height: 27px; 
+	line-height: 27px !important; 
+	background: #fff; 
+	color: #302873 !important; 
+	width:12% !important; 
+	font-size: 16px !important;
+	border: 1px solid #fff !important;
+}
+
+.signOutMenu span {
+	color: #302873 !important;
 }

@@ -23,11 +23,11 @@
 		<where>
 			ACM.OP_SEND_FLAG = 1
 			<if test="agentName != null and agentName != ''">
-				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				AND LOWER(ACM.AGENT_NAME) LIKE '%' ||
 				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="loginName != null and loginName != ''">
-				AND LOWER(ACM.AGENT_NAME) LIKE '%' ||
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
 				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
 			</if>
 		</where>
@@ -38,9 +38,9 @@
 	<select id="selectList"
 		parameterType="mm.aeon.com.ats.base.dto.agentCallHistorySearch.AgentCallHistorySearchReqDto"
 		resultMap="messagingHistorySearchResDto">
-	SELECT	
-			ACM.AGENT_NAME AS LOGIN_NAME,
-			AAL.AGENT_LEVEL_NAME,
+		SELECT	
+			ACM.AGENT_NAME,
+			AAL.AGENT_LEVEL_NAME AS LOGIN_NAME,
 			AALT.NAME,
 			ACM.AGENT_LEVEL_ID,
 			SUM(ACM.CALL_COUNT) as CALL_COUNT
@@ -57,17 +57,17 @@
 		<where>
 			ACM.OP_SEND_FLAG = 1
 			<if test="agentName != null and agentName != ''">
-				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
+				AND LOWER(ACM.AGENT_NAME) LIKE '%' ||
 				LOWER(#{agentName,jdbcType=VARCHAR}) || '%'
 			</if>
 			<if test="loginName != null and loginName != ''">
-				AND LOWER(ACM.AGENT_NAME) LIKE '%' ||
+				AND LOWER(AAL.AGENT_LEVEL_NAME) LIKE '%' ||
 				LOWER(#{loginName,jdbcType=VARCHAR}) || '%'
 			</if>
 		</where>
 		GROUP BY 
 			AAL.AGENT_LEVEL_NAME, ACM.AGENT_NAME, ACM.AGENT_LEVEL_ID, AALT.NAME
-		<if test="sortField != null and sortField != '' and sortField == 'agentName' ">
+		<if test="sortField != null and sortField != '' and sortField == 'loginName' ">
 			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
 				ORDER BY AAL.AGENT_LEVEL_NAME ASC
 			</if>
@@ -75,7 +75,7 @@
 				ORDER BY AAL.AGENT_LEVEL_NAME DESC
 			</if>
 		</if>
-		<if test="sortField != null and sortField != '' and sortField == 'loginName' ">
+		<if test="sortField != null and sortField != '' and sortField == 'agentName' ">
 			<if test="sortOrder != null and sortOrder != '' and sortOrder == 'ASCENDING' ">
 				ORDER BY ACM.AGENT_NAME ASC
 			</if>
@@ -111,7 +111,7 @@
 		type="mm.aeon.com.ats.base.dto.agentCallHistorySearch.AgentCallHistorySearchResDto">
 		<id column="TELEMARKETING_AGENT_ID" jdbcType="INTEGER" property="teleMarketingAgentId" />
 		<result column="CALL_COUNT" jdbcType="VARCHAR" property="callCount" />
-		<result column="AGENT_LEVEL_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
 		<result column="AGENT_LEVEL_ID" jdbcType="VARCHAR" property="agentLevelId" />
 		<result column="NAME" jdbcType="VARCHAR" property="agentLevelName" />
 		<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
